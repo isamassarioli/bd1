@@ -1,0 +1,96 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="loc004_3" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="47cab148-5884-4ce4-bf1e-1ff2f521a0c0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Loc004 Data Adapter"/>
+	<parameter name="mesInicial" class="java.lang.Integer"/>
+	<parameter name="mesFinal" class="java.lang.Integer"/>
+	<parameter name="anoInicial" class="java.lang.Integer"/>
+	<parameter name="anoFinal" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT
+    EXTRACT(YEAR FROM l.dat_devolucao) AS ano,
+    EXTRACT(MONTH FROM l.dat_devolucao) AS mes,
+    SUM(l.val_locacao) AS valor_arrecadado
+FROM locacao l
+WHERE l.dat_devolucao IS NOT NULL
+AND (
+    EXTRACT(YEAR FROM l.dat_devolucao)::INT * 100 +
+    EXTRACT(MONTH FROM l.dat_devolucao)::INT
+) BETWEEN (
+    CAST($P{anoInicial} AS INTEGER) * 100 +
+    CAST($P{mesInicial} AS INTEGER)
+)
+AND (
+    CAST($P{anoFinal} AS INTEGER) * 100 +
+    CAST($P{mesFinal} AS INTEGER)
+)
+GROUP BY
+    EXTRACT(YEAR FROM l.dat_devolucao),
+    EXTRACT(MONTH FROM l.dat_devolucao)
+ORDER BY
+    ano,
+    mes;]]></query>
+	<field name="ano" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ano"/>
+		<property name="com.jaspersoft.studio.field.label" value="ano"/>
+	</field>
+	<field name="mes" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mes"/>
+		<property name="com.jaspersoft.studio.field.label" value="mes"/>
+	</field>
+	<field name="valor_arrecadado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_arrecadado"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_arrecadado"/>
+	</field>
+	<group name="ano">
+		<expression><![CDATA[$F{ano}]]></expression>
+		<groupHeader>
+			<band height="22">
+				<element kind="textField" uuid="5f384333-6476-4394-902b-5a1b74c19718" x="100" y="0" width="100" height="19">
+					<expression><![CDATA[$F{ano}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="mes">
+		<expression><![CDATA[$F{mes}]]></expression>
+		<groupHeader>
+			<band height="25">
+				<element kind="textField" uuid="95e59a2b-0af5-4de1-b0d9-6d4b987d691e" x="160" y="0" width="100" height="19">
+					<expression><![CDATA[$F{mes}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<background height="802" splitType="Stretch">
+		<element kind="image" uuid="6730f1d4-51e0-47cc-80b2-4e732b850248" mode="Opaque" x="0" y="0" width="543" height="799" forecolor="#000000" backcolor="rgba(255, 255, 255, 0.011764706)" linkType="None" linkTarget="Self" hImageAlign="Center" vImageAlign="Middle">
+			<expression><![CDATA["C:/Users/isama/Documents/GitHub/bd1/src/main/java/com/mycompany/trabalhobd/image 1.png"]]></expression>
+		</element>
+	</background>
+	<title height="120" splitType="Stretch">
+		<element kind="staticText" uuid="4942785c-e650-4ea4-864e-64ea7dae7a00" x="88" y="0" width="385" height="70" fontSize="50.0">
+			<text><![CDATA[LOCADORA 004]]></text>
+		</element>
+		<element kind="staticText" uuid="d65d2eb2-4208-4d76-98e9-46556fb1ac9e" x="167" y="50" width="220" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[Aqui, você confia!]]></text>
+		</element>
+		<element kind="staticText" uuid="46212ffd-0627-4169-be8d-7c4833d76e8f" x="170" y="90" width="220" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[VALOR ARRECADADO]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="64" splitType="Stretch"/>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<element kind="staticText" uuid="c6677e0f-5dc8-4e56-aa98-dc42f55d2f31" x="211" y="10" width="138" height="15" hTextAlign="Center">
+				<text><![CDATA[VALOR ARRECADADO]]></text>
+			</element>
+			<element kind="textField" uuid="36ca301b-9f5b-4771-93c8-4f46e56e76aa" x="230" y="30" width="100" height="18" hTextAlign="Center">
+				<expression><![CDATA[$F{valor_arrecadado}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c293383-f184-43dd-80f3-a5352f9ec58f"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

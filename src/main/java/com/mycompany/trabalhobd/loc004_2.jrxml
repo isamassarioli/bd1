@@ -1,0 +1,118 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="loc004_2" language="java" columnCount="1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="47cab148-5884-4ce4-bf1e-1ff2f521a0c0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Loc004 Data Adapter"/>
+	<query language="SQL"><![CDATA[SELECT
+    EXTRACT(YEAR FROM l.dat_locacao) AS ano,
+    EXTRACT(MONTH FROM l.dat_locacao) AS mes,
+    c.nom_cliente,
+    SUM(l.val_locacao) AS valor_devido
+FROM locacao l
+INNER JOIN cliente c
+    ON c.cod_cliente = l.cod_cliente
+WHERE l.dat_devolucao IS NULL
+GROUP BY
+    ano,
+    mes,
+    c.nom_cliente
+ORDER BY
+    ano,
+    mes,
+    c.nom_cliente]]></query>
+	<field name="mes" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mes"/>
+		<property name="com.jaspersoft.studio.field.label" value="mes"/>
+	</field>
+	<field name="ano" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ano"/>
+		<property name="com.jaspersoft.studio.field.label" value="ano"/>
+	</field>
+	<field name="nom_cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nom_cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="nom_cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="valor_devido" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_devido"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_devido"/>
+	</field>
+	<variable name="total_sum" resetType="Group" calculation="Sum" resetGroup="mes" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{valor_devido}]]></expression>
+	</variable>
+	<group name="ano" keepTogether="true">
+		<expression><![CDATA[$F{ano}]]></expression>
+		<groupHeader>
+			<band height="32">
+				<element kind="textField" uuid="d8d46445-0501-4228-8fc7-e3d3cff97cac" x="60" y="9" width="100" height="15">
+					<expression><![CDATA[$F{ano}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="mes" keepTogether="true">
+		<expression><![CDATA[$F{mes}]]></expression>
+		<groupHeader>
+			<band height="51">
+				<element kind="textField" uuid="dcda89a0-23e9-4866-8d81-a59a35461003" x="220" y="5" width="59" height="14">
+					<expression><![CDATA[$F{mes}]]></expression>
+				</element>
+				<element kind="staticText" uuid="8b94df1f-fdb7-4632-b1fc-2444688fa01b" x="180" y="4" width="32" height="16">
+					<text><![CDATA[MES]]></text>
+				</element>
+				<element kind="staticText" uuid="9a547801-5069-4aa5-b2d2-c339a5fccae3" x="180" y="21" width="66" height="19" vTextAlign="Bottom">
+					<text><![CDATA[CLIENTE]]></text>
+				</element>
+				<element kind="staticText" uuid="aeb734da-023a-4c61-95dd-9325a3e69b3b" x="250" y="21" width="110" height="19" vTextAlign="Bottom">
+					<text><![CDATA[VALOR DEVIDO]]></text>
+				</element>
+				<element kind="line" uuid="62c7878d-ffeb-4921-bdaf-a42cfaf50dcb" x="56" y="47" width="472" height="1"/>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="52">
+				<element kind="staticText" uuid="fac2aa5c-cbf9-47a0-a168-c33151235c3a" x="67" y="30" width="100" height="17">
+					<text><![CDATA[TOTAL DO MÊS]]></text>
+				</element>
+				<element kind="textField" uuid="087b7dcf-8c8f-436c-8f8b-41c564f15dfe" x="177" y="30" width="100" height="22">
+					<expression><![CDATA[$V{total_sum}]]></expression>
+				</element>
+				<element kind="line" uuid="6d61c59b-cc9e-4c34-a3d5-f7c931af12df" x="56" y="10" width="472" height="1"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background height="802" splitType="Stretch">
+		<element kind="image" uuid="c0184024-2a9e-48c6-b181-34c6dad963bb" mode="Opaque" x="0" y="0" width="543" height="799" forecolor="#000000" backcolor="rgba(255, 255, 255, 0.011764706)" linkType="None" linkTarget="Self" hImageAlign="Center" vImageAlign="Middle">
+			<expression><![CDATA["C:/Users/isama/Documents/GitHub/bd1/src/main/java/com/mycompany/trabalhobd/image 1.png"]]></expression>
+		</element>
+	</background>
+	<title height="111" splitType="Stretch">
+		<element kind="staticText" uuid="5c18839c-2c5b-4b2d-9acc-af16d0da8bdb" x="88" y="0" width="385" height="70" fontSize="50.0">
+			<text><![CDATA[LOCADORA 004]]></text>
+		</element>
+		<element kind="staticText" uuid="839e9d85-6f50-4e68-9296-e22cf00cbeb0" x="167" y="50" width="220" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[Aqui, você confia!]]></text>
+		</element>
+	</title>
+	<pageHeader height="42" splitType="Stretch">
+		<element kind="staticText" uuid="9a346301-1ed0-4bf0-b5b4-85b48cbc5f7f" x="170" y="2" width="220" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[Valor a receber]]></text>
+		</element>
+		<element kind="line" uuid="0bc86b12-433d-4be4-9fdd-4180cb305e11" x="60" y="26" width="473" height="2"/>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<element kind="textField" uuid="5fe85a55-309f-49cf-ac5f-0a3ab4ef1b79" x="170" y="0" width="100" height="12" fontSize="8.0">
+				<expression><![CDATA[$F{nom_cliente}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="65990b46-48af-48df-8433-d57acc457a33"/>
+			</element>
+			<element kind="textField" uuid="17a3a40f-b944-436d-a58a-a4d8f3adca97" x="270" y="1" width="100" height="15" fontSize="8.0">
+				<expression><![CDATA[$F{valor_devido}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="963df67f-8e56-49e3-a168-7a11f999afc1"/>
+			</element>
+			<property name="com.jaspersoft.studio.layout"/>
+		</band>
+	</detail>
+	<columnFooter height="69" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

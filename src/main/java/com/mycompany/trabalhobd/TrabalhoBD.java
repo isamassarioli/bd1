@@ -1,18 +1,114 @@
+package com.mycompany.trabalhobd;
+
+import java.awt.Desktop;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 
 public class TrabalhoBD {
     
     private static final String URL = "jdbc:postgresql://localhost:5432/loc004";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "postgre";
+    private static final String PASSWORD = "isadora";
+    private static final Path REPORTS_DIR = Paths.get("src", "main", "java", "com", "mycompany", "trabalhobd");
+    private static final Path REPORT_PDF_DIR = Paths.get("target", "reports");
     
     private Connection connection;
     private Scanner scanner;
     
     public TrabalhoBD() {
         this.scanner = new Scanner(System.in);
+    }
+
+    private void executarRelatorio(String nomeArquivo, Map<String, Object> parametros) {
+        try {
+            JasperReport jasperReport = carregarRelatorio(nomeArquivo);
+            Map<String, Object> parametrosMutaveis = new HashMap<>(parametros);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametrosMutaveis, connection);
+            Files.createDirectories(REPORT_PDF_DIR);
+
+            String nomePdf = nomeArquivo.replace(".jrxml", ".pdf");
+            Path arquivoPdf = REPORT_PDF_DIR.resolve(nomePdf);
+            JasperExportManager.exportReportToPdfFile(jasperPrint, arquivoPdf.toString());
+
+            System.out.println("✓ Relatório gerado em PDF: " + arquivoPdf.toAbsolutePath());
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(arquivoPdf.toFile());
+            }
+        } catch (JRException | IOException e) {
+            System.out.println("✗ Erro ao executar o relatório " + nomeArquivo + ": " + e.getMessage());
+        }
+    }
+
+    private JasperReport carregarRelatorio(String nomeArquivo) throws JRException, IOException {
+        Path arquivoEmFonte = REPORTS_DIR.resolve(nomeArquivo);
+        if (Files.exists(arquivoEmFonte)) {
+            try (InputStream inputStream = Files.newInputStream(arquivoEmFonte)) {
+                return JasperCompileManager.compileReport(inputStream);
+            }
+        }
+
+        try (InputStream inputStream = getClass().getResourceAsStream("/com/mycompany/trabalhobd/" + nomeArquivo)) {
+            if (inputStream != null) {
+                return JasperCompileManager.compileReport(inputStream);
+            }
+        }
+
+        throw new FileNotFoundException("Relatório não encontrado: " + nomeArquivo);
+    }
+
+    private void executarRelatorio1() {
+        executarRelatorio("loc004_1.jrxml", Map.of());
+    }
+
+    private void executarRelatorio2() {
+        executarRelatorio("loc004_2.jrxml", Map.of());
+    }
+
+    private void executarRelatorio3() {
+        System.out.print("Mês inicial: ");
+        int mesInicial = scanner.nextInt();
+        System.out.print("Ano inicial: ");
+        int anoInicial = scanner.nextInt();
+        System.out.print("Mês final: ");
+        int mesFinal = scanner.nextInt();
+        System.out.print("Ano final: ");
+        int anoFinal = scanner.nextInt();
+        scanner.nextLine();
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("mesInicial", mesInicial);
+        parametros.put("anoInicial", anoInicial);
+        parametros.put("mesFinal", mesFinal);
+        parametros.put("anoFinal", anoFinal);
+
+        executarRelatorio("Loc004_3.jrxml", parametros);
+    }
+
+    private void executarRelatorio4() {
+        System.out.print("Código do cliente: ");
+        int codigoCliente = scanner.nextInt();
+        scanner.nextLine();
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("codigoCliente", codigoCliente);
+
+        executarRelatorio("loc004_4.jrxml", parametros);
     }
     
     // ===================== CONNECTION METHODS =====================
@@ -731,6 +827,11 @@ public class TrabalhoBD {
             System.out.println("8. Realizar locação");
             System.out.println("9. Devolver fita");
             System.out.println("10. Listar locações");
+            System.out.println("--- RELATÓRIOS ---");
+            System.out.println("11. Fitas locadas e ainda não devolvidas");
+            System.out.println("12. Valor a ser recebido");
+            System.out.println("13. Valor arrecadado");
+            System.out.println("14. Valor arrecadado por cliente");
             System.out.println("0. Sair");
             System.out.println("===============================================");
             System.out.print("Escolha uma opção: ");
@@ -768,6 +869,18 @@ public class TrabalhoBD {
                     break;
                 case 10:
                     listarLocacoes();
+                    break;
+                case 11:
+                    executarRelatorio1();
+                    break;
+                case 12:
+                    executarRelatorio2();
+                    break;
+                case 13:
+                    executarRelatorio3();
+                    break;
+                case 14:
+                    executarRelatorio4();
                     break;
                 case 0:
                     continuar = false;

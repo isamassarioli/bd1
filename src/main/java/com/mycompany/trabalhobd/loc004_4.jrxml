@@ -1,0 +1,144 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="loc004_4" language="java" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a75348ba-94b8-4b9e-a502-42b5a6ad9982">
+	<property name="ireport.zoom" value="0.9090909090909091"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Loc004 Data Adapter"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="codigoCliente" class="java.lang.Integer"/>
+	<query language="sql"><![CDATA[SELECT
+    c.cod_cliente,
+    c.nom_cliente,
+    c.cod_cliente_titular,
+    
+    CASE
+    WHEN c.cod_cliente_titular IS NULL
+    THEN 'Titular'
+    ELSE 'Dependente'
+	END AS tipo_cliente,
+
+    COALESCE(SUM(l.val_locacao),0) AS total_gasto,
+
+    COALESCE(
+        SUM(
+            CASE
+                WHEN l.dat_devolucao IS NULL
+                THEN l.val_locacao
+                ELSE 0
+            END
+        ),0
+    ) AS valor_pendente
+
+FROM cliente c
+
+LEFT JOIN locacao l
+ON l.cod_cliente = c.cod_cliente
+
+WHERE
+    c.cod_cliente = $P{codigoCliente}
+    OR c.cod_cliente_titular = $P{codigoCliente}
+
+GROUP BY
+    c.cod_cliente,
+    c.nom_cliente,
+    c.cod_cliente_titular
+
+ORDER BY
+    c.cod_cliente_titular NULLS FIRST,
+    c.nom_cliente;]]></query>
+	<field name="cod_cliente" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="nom_cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nom_cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="nom_cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="cod_cliente_titular" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cod_cliente_titular"/>
+		<property name="com.jaspersoft.studio.field.label" value="cod_cliente_titular"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="tipo_cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_cliente"/>
+	</field>
+	<field name="total_gasto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_gasto"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_gasto"/>
+	</field>
+	<field name="valor_pendente" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor_pendente"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor_pendente"/>
+	</field>
+	<variable name="QUESTAO1" class="java.math.BigDecimal">
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="totalFamilia" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{total_gasto}]]></expression>
+	</variable>
+	<background height="802" splitType="Stretch">
+		<element kind="image" uuid="5494184b-136d-43b5-b34b-2f06f02034b5" mode="Opaque" x="0" y="0" width="543" height="799" forecolor="#000000" backcolor="rgba(255, 255, 255, 0.011764706)" linkType="None" linkTarget="Self" hImageAlign="Center" vImageAlign="Middle">
+			<expression><![CDATA["C:/Users/isama/Documents/GitHub/bd1/src/main/java/com/mycompany/trabalhobd/image 1.png"]]></expression>
+		</element>
+	</background>
+	<title height="105" splitType="Stretch">
+		<element kind="staticText" uuid="fe9a614f-eabb-4e31-81e7-0439b5ce6a1e" x="88" y="0" width="385" height="70" fontSize="50.0">
+			<text><![CDATA[LOCADORA 004]]></text>
+		</element>
+		<element kind="staticText" uuid="c1d1f5a1-5094-4367-8477-784ad809e018" x="167" y="50" width="220" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[Aqui, você confia!]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch">
+		<element kind="staticText" uuid="3527bea8-69fe-44a2-bbab-4ebaf0ef0469" x="100" y="2" width="360" height="30" fontSize="20.0" hTextAlign="Center">
+			<text><![CDATA[VALOR GASTO POR FAMÍLIA]]></text>
+		</element>
+	</pageHeader>
+	<columnHeader height="64" splitType="Stretch">
+		<element kind="staticText" uuid="75d52e13-9116-4c6b-bdda-1403fff4a5de" x="48" y="45" width="70" height="15" hTextAlign="Center">
+			<text><![CDATA[TIPO]]></text>
+		</element>
+		<element kind="staticText" uuid="c6cd41c3-93b9-4ede-949b-7f65c7498965" x="250" y="45" width="100" height="15" hTextAlign="Center">
+			<text><![CDATA[TOTAL]]></text>
+		</element>
+		<element kind="staticText" uuid="e9b1841b-d013-469d-8e66-131125130488" x="380" y="45" width="100" height="15" hTextAlign="Center">
+			<text><![CDATA[PENDENTE]]></text>
+		</element>
+		<element kind="staticText" uuid="ab411ecd-47f6-4463-82a7-04b11ad42969" x="135" y="45" width="100" height="15" hTextAlign="Center">
+			<text><![CDATA[CLIENTE]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="48" splitType="Stretch">
+			<element kind="textField" uuid="b46f8162-7b2a-4fb2-acb3-2aa10a090e35" x="142" y="14" width="100" height="19">
+				<expression><![CDATA[$F{nom_cliente}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8bb71de-cd88-4778-9361-e8e2a5fe8bd0"/>
+			</element>
+			<element kind="textField" uuid="274f6794-36b4-4de2-b839-80af296f7473" x="387" y="15" width="100" height="18" hTextAlign="Right">
+				<expression><![CDATA[$F{valor_pendente}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a844d1f3-e663-4108-b12c-d62d268f1941"/>
+			</element>
+			<element kind="textField" uuid="a9bb3e90-e1cd-4833-a451-1e33f2965ed1" x="257" y="15" width="100" height="18" hTextAlign="Right">
+				<expression><![CDATA[$F{total_gasto}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8912436a-27d6-411c-b4bf-cd8be82e37bd"/>
+			</element>
+			<element kind="textField" uuid="e7c71f11-0ae0-4f62-8141-00ea1266d6f9" x="67" y="15" width="74" height="18">
+				<expression><![CDATA[$F{tipo_cliente}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4406711-2bf3-4c8b-82b4-7fe01a6ba6e2"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="50" splitType="Stretch"/>
+	<summary height="58" splitType="Stretch">
+		<element kind="textField" uuid="45097756-299e-4eea-8b33-e7d94a920477" x="430" y="10" width="100" height="18">
+			<expression><![CDATA[$V{totalFamilia}]]></expression>
+		</element>
+		<element kind="staticText" uuid="c19506bf-c951-4d2a-8da6-fa6285a90740" x="250" y="10" width="172" height="18">
+			<text><![CDATA[TOTAL GASTO PELA FAMÍLIA:]]></text>
+		</element>
+	</summary>
+</jasperReport>
