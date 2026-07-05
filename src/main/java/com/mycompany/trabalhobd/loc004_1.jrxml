@@ -54,8 +54,8 @@ ORDER BY
 		<property name="com.jaspersoft.studio.field.name" value="total_locacao"/>
 		<property name="com.jaspersoft.studio.field.label" value="total_locacao"/>
 	</field>
-	<variable name="total_locacao1" resetType="Column" calculation="Sum" class="java.math.BigDecimal">
-		<expression><![CDATA[$F{total_locacao}]]></expression>
+	<variable name="totalLocacao" resetType="Group" calculation="Sum" resetGroup="total_porcliente" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{val_locacao}]]></expression>
 	</variable>
 	<variable name="val_locacao1" resetType="Column" calculation="Sum" class="java.math.BigDecimal">
 		<expression><![CDATA[$F{val_locacao}]]></expression>
@@ -85,6 +85,13 @@ ORDER BY
 				<element kind="line" uuid="a3a1d4c6-6d4a-464c-8529-49aa2e02d979" x="6" y="0" width="548" height="1"/>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="66">
+				<element kind="textField" uuid="4d3ab6f2-9630-42f5-b8cd-3d5a365aacf6" x="443" y="36" width="100" height="30">
+					<expression><![CDATA[$V{totalLocacao}]]></expression>
+				</element>
+			</band>
+		</groupFooter>
 	</group>
 	<background height="802" splitType="Stretch">
 		<element kind="image" uuid="45ad0a59-fba7-40ba-8f97-efc312c8953c" mode="Opaque" x="0" y="0" width="543" height="799" forecolor="#000000" backcolor="rgba(255, 255, 255, 0.011764706)" linkType="None" linkTarget="Self" hImageAlign="Center" vImageAlign="Middle">
@@ -112,7 +119,7 @@ ORDER BY
 		<element kind="line" uuid="63759997-4796-4199-adca-c508c7fe049a" x="10" y="0" width="548" height="1"/>
 	</columnHeader>
 	<detail>
-		<band height="28" splitType="Stretch">
+		<band height="44" splitType="Stretch">
 			<element kind="textField" uuid="1fbefbb7-eb8e-4908-a131-d3fa1e18094e" x="118" y="7" width="60" height="18">
 				<expression><![CDATA[$F{cod_fita}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c26e43ff-a25b-4676-8ad5-a86d91612006"/>
@@ -125,24 +132,9 @@ ORDER BY
 				<expression><![CDATA[$F{val_locacao}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07b2132b-9f3b-4d88-b58e-59f2d59a2150"/>
 			</element>
-			<element kind="textField" uuid="6bdde612-dfe4-4ba8-a7f5-5364fdc0448b" x="450" y="7" width="100" height="15" linkTarget="Self">
-				<expression><![CDATA[$F{total_locacao}]]></expression>
-				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f30bccbe-d279-4219-8152-54e184714af1"/>
-			</element>
 		</band>
 	</detail>
-	<columnFooter height="41" splitType="Stretch">
-		<element kind="staticText" uuid="ce271c06-2caa-48de-a1ad-b17cc21b5ec3" x="178" y="10" width="82" height="30" fontSize="15.0">
-			<text><![CDATA[Total geral: ]]></text>
-		</element>
-		<element kind="textField" uuid="c720d832-3473-4c4c-8cd0-245c97eb0d44" x="260" y="11" width="162" height="28" fontSize="15.0">
-			<expression><![CDATA[$V{val_locacao1}]]></expression>
-		</element>
-	</columnFooter>
-	<pageFooter height="74" splitType="Stretch">
-		<element kind="textField" uuid="35668982-6a8a-4248-9fc2-7eb3ebe4ff88" x="458" y="44" width="102" height="30">
-			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
-		</element>
-	</pageFooter>
+	<columnFooter height="41" splitType="Stretch"/>
+	<pageFooter height="74" splitType="Stretch"/>
 	<summary height="42" splitType="Stretch"/>
 </jasperReport>
