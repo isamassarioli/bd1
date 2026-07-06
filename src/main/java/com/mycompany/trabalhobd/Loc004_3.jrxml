@@ -6,29 +6,31 @@
 	<parameter name="mesFinal" class="java.lang.Integer"/>
 	<parameter name="anoInicial" class="java.lang.Integer"/>
 	<parameter name="anoFinal" class="java.lang.Integer"/>
-	<query language="SQL"><![CDATA[SELECT
-    EXTRACT(YEAR FROM l.dat_devolucao) AS ano,
-    EXTRACT(MONTH FROM l.dat_devolucao) AS mes,
-    SUM(l.val_locacao) AS valor_arrecadado
-FROM locacao l
-WHERE l.dat_devolucao IS NOT NULL
-AND (
-    EXTRACT(YEAR FROM l.dat_devolucao)::INT * 100 +
-    EXTRACT(MONTH FROM l.dat_devolucao)::INT
-) BETWEEN (
-    CAST($P{anoInicial} AS INTEGER) * 100 +
-    CAST($P{mesInicial} AS INTEGER)
-)
-AND (
-    CAST($P{anoFinal} AS INTEGER) * 100 +
-    CAST($P{mesFinal} AS INTEGER)
-)
-GROUP BY
-    EXTRACT(YEAR FROM l.dat_devolucao),
-    EXTRACT(MONTH FROM l.dat_devolucao)
-ORDER BY
-    ano,
-    mes;]]></query>
+	<query language="SQL"><![CDATA[SELECT 
+    EXTRACT(YEAR FROM l.dat_devolucao) AS ano, 
+    EXTRACT(MONTH FROM l.dat_devolucao) AS mes, 
+    TO_CHAR(SUM(l.val_locacao), 'LFM999G999D99') AS valor_arrecadado 
+FROM 
+    locacao l 
+WHERE 
+    l.dat_devolucao IS NOT NULL 
+    AND (
+        EXTRACT(YEAR FROM l.dat_devolucao)::INT * 100 
+        + EXTRACT(MONTH FROM l.dat_devolucao)::INT
+    ) BETWEEN (
+        CAST($P{anoInicial} AS INTEGER) * 100 
+        + CAST($P{mesInicial} AS INTEGER)
+    ) AND (
+        CAST($P{anoFinal} AS INTEGER) * 100 
+        + CAST($P{mesFinal} AS INTEGER)
+    ) 
+GROUP BY 
+    EXTRACT(YEAR FROM l.dat_devolucao), 
+    EXTRACT(MONTH FROM l.dat_devolucao) 
+ORDER BY 
+    ano, 
+    mes;
+]]></query>
 	<field name="ano" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="ano"/>
 		<property name="com.jaspersoft.studio.field.label" value="ano"/>
@@ -37,7 +39,7 @@ ORDER BY
 		<property name="com.jaspersoft.studio.field.name" value="mes"/>
 		<property name="com.jaspersoft.studio.field.label" value="mes"/>
 	</field>
-	<field name="valor_arrecadado" class="java.math.BigDecimal">
+	<field name="valor_arrecadado" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="valor_arrecadado"/>
 		<property name="com.jaspersoft.studio.field.label" value="valor_arrecadado"/>
 	</field>
@@ -73,12 +75,11 @@ ORDER BY
 		<element kind="staticText" uuid="d65d2eb2-4208-4d76-98e9-46556fb1ac9e" x="167" y="50" width="220" height="30" fontSize="20.0" hTextAlign="Center">
 			<text><![CDATA[Aqui, você confia!]]></text>
 		</element>
-		<element kind="staticText" uuid="46212ffd-0627-4169-be8d-7c4833d76e8f" x="170" y="90" width="220" height="30" fontSize="20.0" hTextAlign="Center">
+		<element kind="staticText" uuid="46212ffd-0627-4169-be8d-7c4833d76e8f" x="170" y="88" width="220" height="30" fontSize="20.0" hTextAlign="Center">
 			<text><![CDATA[VALOR ARRECADADO]]></text>
 		</element>
 	</title>
 	<pageHeader height="35" splitType="Stretch"/>
-	<columnHeader height="64" splitType="Stretch"/>
 	<detail>
 		<band height="61" splitType="Stretch">
 			<element kind="staticText" uuid="c6677e0f-5dc8-4e56-aa98-dc42f55d2f31" x="211" y="10" width="138" height="15" hTextAlign="Center">
@@ -90,7 +91,5 @@ ORDER BY
 			</element>
 		</band>
 	</detail>
-	<columnFooter height="45" splitType="Stretch"/>
-	<pageFooter height="54" splitType="Stretch"/>
 	<summary height="42" splitType="Stretch"/>
 </jasperReport>

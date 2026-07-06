@@ -1,5 +1,5 @@
 <!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
-<jasperReport name="loc004_1" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="19520da6-f1de-4e8a-8884-53886d5b3c8c">
+<jasperReport name="loc004_1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="19520da6-f1de-4e8a-8884-53886d5b3c8c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Loc004 Data Adapter"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<query language="sql"><![CDATA[SELECT
@@ -86,8 +86,8 @@ ORDER BY
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="66">
-				<element kind="textField" uuid="4d3ab6f2-9630-42f5-b8cd-3d5a365aacf6" x="443" y="36" width="100" height="30">
+			<band height="26">
+				<element kind="textField" uuid="4d3ab6f2-9630-42f5-b8cd-3d5a365aacf6" x="443" y="5" width="100" height="17">
 					<expression><![CDATA[$V{totalLocacao}]]></expression>
 				</element>
 			</band>
@@ -119,12 +119,12 @@ ORDER BY
 		<element kind="line" uuid="63759997-4796-4199-adca-c508c7fe049a" x="10" y="0" width="548" height="1"/>
 	</columnHeader>
 	<detail>
-		<band height="44" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<element kind="textField" uuid="1fbefbb7-eb8e-4908-a131-d3fa1e18094e" x="118" y="7" width="60" height="18">
 				<expression><![CDATA[$F{cod_fita}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c26e43ff-a25b-4676-8ad5-a86d91612006"/>
 			</element>
-			<element kind="textField" uuid="ecd2e4bf-e1cc-481d-9eec-0c3737a818ac" x="200" y="7" width="110" height="19">
+			<element kind="textField" uuid="ecd2e4bf-e1cc-481d-9eec-0c3737a818ac" x="200" y="7" width="110" height="18">
 				<expression><![CDATA[$F{nom_filme}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="817c449f-d818-4bc7-9308-cf963dfb6d07"/>
 			</element>
